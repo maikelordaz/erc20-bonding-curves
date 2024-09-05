@@ -58,7 +58,7 @@ contract HelperConfig is CodeConstants, Script {
 
     function getConfigByChainId(
         uint256 chainId
-    ) public returns (NetworkConfig memory) {
+    ) public view returns (NetworkConfig memory) {
         if (chainId == ARB_SEPOLIA_CHAIN_ID) {
             return networkConfigs[chainId];
         } else if (chainId == LOCAL_CHAIN_ID) {
@@ -80,7 +80,11 @@ contract HelperConfig is CodeConstants, Script {
                               LOCAL CONFIG
     //////////////////////////////////////////////////////////////*/
 
-    function getOrCreateAnvilConfig() public returns (NetworkConfig memory) {
+    function getOrCreateAnvilConfig()
+        public
+        view
+        returns (NetworkConfig memory)
+    {
         return NetworkConfig({tokenAdmin: tokenAdmin.local});
     }
 }

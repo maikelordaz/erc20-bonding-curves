@@ -22,23 +22,33 @@ contract TokenBlacklistTest is Test {
     }
 
     function test_blacklist() public {
-        assert(!token.isUserBlacklisted(blacklisted));
+        assert(!token.isBlacklisted(blacklisted));
+
         vm.prank(token.owner());
         token.blacklist(blacklisted);
-        assert(token.isUserBlacklisted(blacklisted));
+
+        assert(token.isBlacklisted(blacklisted));
     }
 
     function test_notBlacklistedCanTransfer() public {
+        assertEq(token.balanceOf(alice), 0);
+
         vm.prank(notBlacklisted);
-        assert(token.transfer(notBlacklisted, 1 ether));
+        token.transfer(alice, 1 ether);
+
+        assertEq(token.balanceOf(alice), 1 ether);
     }
 
     function test_notBlacklistedCanTransferFrom() public {
+        assertEq(token.balanceOf(alice), 0);
+
         vm.prank(notBlacklisted);
         token.approve(address(this), 1 ether);
 
         vm.prank(address(this));
-        assert(token.transferFrom(notBlacklisted, alice, 100));
+        token.transferFrom(notBlacklisted, alice, 1 ether);
+
+        assertEq(token.balanceOf(alice), 1 ether);
     }
 
     modifier blacklist() {

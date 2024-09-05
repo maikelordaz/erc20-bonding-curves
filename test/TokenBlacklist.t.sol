@@ -1,0 +1,77 @@
+// SPDX-License-Identifier: MIT
+
+import {Test, console2} from "forge-std/Test.sol";
+import {DeployTokenBlacklist} from "script/DeployTokenBlacklist.s.sol";
+import {TokenBlacklist} from "src/TokenBlacklist.sol";
+
+pragma solidity 0.8.26;
+
+contract TokenBlacklistTest is Test {
+    DeployTokenBlacklist deployer;
+    TokenBlacklist token;
+    address notBlacklisted = makeAddr("notBlacklisted");
+    address blacklisted = makeAddr("blacklisted");
+    address alice = makeAddr("alice");
+
+    function setUp() public {
+        deployer = new DeployTokenBlacklist();
+        token = deployer.run();
+
+        deal(address(token), notBlacklisted, 100 ether);
+        deal(address(token), blacklisted, 100 ether);
+    }
+
+    function test_blacklist() public {
+        assert(!token.isUserBlacklisted(blacklisted));
+        vm.prank(token.owner());
+        token.blacklist(blacklisted);
+        assert(token.isUserBlacklisted(blacklisted));
+    }
+
+    function test_notBlacklistedCanTransfer() public {
+        vm.prank(notBlacklisted);
+        assert(token.transfer(notBlacklisted, 1 ether));
+    }
+
+    function test_notBlacklistedCanTransferFrom() public {
+        vm.prank(notBlacklisted);
+        token.approve(address(this), 1 ether);
+
+        vm.prank(address(this));
+        assert(token.transferFrom(notBlacklisted, alice, 100));
+    }
+
+    modifier blacklist() {
+        vm.prank(token.owner());
+        token.blacklist(blacklisted);
+        _;
+    }
+
+    function test_blacklistedCanNotTransfer() public blacklist {
+        vm.prank(blacklisted);
+        vm.expectRevert(
+            TokenBlacklist.TokenBlacklist__AddressBlacklisted.selector
+        );
+        token.transfer(notBlacklisted, 1 ether);
+    }
+
+    function test_notBlacklistedCanNotTransferFrom() public blacklist {
+        vm.prank(notBlacklisted);
+        token.approve(address(this), 1 ether);
+
+        vm.prank(blacklisted);
+        token.approve(address(this), 1 ether);
+
+        vm.startPrank(address(this));
+        vm.expectRevert(
+            TokenBlacklist.TokenBlacklist__AddressBlacklisted.selector
+        );
+        token.transferFrom(notBlacklisted, blacklisted, 100);
+
+        vm.expectRevert(
+            TokenBlacklist.TokenBlacklist__AddressBlacklisted.selector
+        );
+        token.transferFrom(notBlacklisted, blacklisted, 100);
+        vm.stopPrank();
+    }
+}

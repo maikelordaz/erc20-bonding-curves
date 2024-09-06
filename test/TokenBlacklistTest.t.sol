@@ -4,7 +4,7 @@ import {Test, console2} from "forge-std/Test.sol";
 import {DeployTokenBlacklist} from "script/DeployTokenBlacklist.s.sol";
 import {TokenBlacklist} from "src/TokenBlacklist.sol";
 
-pragma solidity 0.8.26;
+pragma solidity 0.8.27;
 
 contract TokenBlacklistTest is Test {
     DeployTokenBlacklist deployer;

@@ -4,7 +4,7 @@ import {Test, console2} from "forge-std/Test.sol";
 import {DeployTokenGod} from "script/DeployTokenGod.s.sol";
 import {TokenGod} from "src/TokenGod.sol";
 
-pragma solidity 0.8.26;
+pragma solidity 0.8.27;
 
 contract TokenGodTest is Test {
     DeployTokenGod deployer;

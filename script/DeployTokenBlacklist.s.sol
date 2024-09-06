@@ -4,7 +4,7 @@ import {Script} from "forge-std/Script.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";
 import {TokenBlacklist} from "src/TokenBlacklist.sol";
 
-pragma solidity 0.8.26;
+pragma solidity 0.8.27;
 
 contract DeployTokenBlacklist is Script {
     function run() public returns (TokenBlacklist) {

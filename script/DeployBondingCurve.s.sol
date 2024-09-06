@@ -3,7 +3,7 @@
 import {Script} from "forge-std/Script.sol";
 import {BondingCurve} from "src/BondingCurve.sol";
 
-pragma solidity 0.8.26;
+pragma solidity 0.8.27;
 
 contract DeployBondingCurve is Script {
     function run() public returns (BondingCurve) {

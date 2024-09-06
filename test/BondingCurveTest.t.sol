@@ -4,7 +4,7 @@ import {Test, console2} from "forge-std/Test.sol";
 import {DeployBondingCurve} from "script/DeployBondingCurve.s.sol";
 import {BondingCurve} from "src/BondingCurve.sol";
 
-pragma solidity 0.8.26;
+pragma solidity 0.8.27;
 
 contract BondingCurveTest is Test {
     DeployBondingCurve deployer;

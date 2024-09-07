@@ -14,4 +14,10 @@ contract BondingCurveTest is Test {
         deployer = new DeployBondingCurve();
         curve = deployer.run();
     }
+
+    function testAmountToPay() public {
+        uint256 amount = 10;
+        uint256 paymentAmount = curve.getPaymentAmount(amount);
+        assertEq(paymentAmount, 55);
+    }
 }

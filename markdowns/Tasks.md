@@ -1,0 +1,7 @@
+# ERC777 and ERC1363 tokens
+
+Both of this standards come to solve the same issue, with ERC20 tokens we are unable to react on a transfer, Why? because when a transfer happens an event is emitted, and this ones can not be tracked on-chain, only off-chain. This two standards implement hooks on every transfer so an smart contract can react to it, the difference is the ERC1363 does this in a different function called `transferAndCall` and the `transfer` and `transferFrom` functions behave the same as in ERC20. This bring reentrancy issues, but also comes with a big topic of conversation where the web3 adoption is hard to achieve when it has a lot of UX flaws.
+
+# SafeERC20
+
+Another big UX flaw is with the way the `transfer` and `transferFrom` behave, both of them returns a boolean `true` if the transfer is successful, and false if it fails. This is a big issue because the transfer wont revert if it fails, and the user will not know that the transfer failed, of course we can check the return value and act accordingly, and do another thing if needed. This is why the OpenZeppelin team created the `SafeERC20` library, this library wraps the `transfer` and `transferFrom` functions and reverts if the transfer fails, this way the user will know that the transfer failed and the contract will not be in an inconsistent state.

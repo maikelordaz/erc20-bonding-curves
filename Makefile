@@ -21,7 +21,7 @@ build:; forge build
 
 test :; forge test 
 
-coverage :; forge coverage --report debug > coverage-report.txt
+coverage :; forge coverage
 
 snapshot :; forge snapshot
 

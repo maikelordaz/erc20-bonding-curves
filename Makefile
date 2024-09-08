@@ -12,7 +12,7 @@ clean  :; forge clean
 # Remove modules
 remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "chore: modules"
 
-install :; forge install OpenZeppelin/openzeppelin-contracts-upgradeable@v5.0.2 --no-commit && forge install cyfrin/foundry-devops@0.2.2 --no-commit 
+install :; forge install OpenZeppelin/openzeppelin-contracts-upgradeable@v5.0.2 --no-commit && forge install foundry-rs/forge-stds@v1.9.2 --no-commit 
 
 # Update Dependencies
 update:; forge update

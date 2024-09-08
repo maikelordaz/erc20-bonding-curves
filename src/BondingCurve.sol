@@ -4,11 +4,13 @@
 * @title BondingCurve
 * @author Maikel Ordaz
 * @notice Contract with academic purposes   
-* @dev The bonding curve core invariant will be 'y = x' (linear bonding curve)
-         This means that the price of the token will increase linearly with the supply
-         Example: 1 token = 1 wei, 2 tokens = 2 wei, 3 tokens = 3 wei, and so on. Or
-         in other words, the price of the token will be equal to the supply.
-* @dev core invariant 'priceToPay = ((2 * totalSupply) + amount + 1) * amount / 2'
+* @dev The bonding curve  will be 'y = x' (linear bonding curve) this means that the 
+       price of the token will increase linearly with the supply.
+       Example: 1 token = 1 wei, 2 tokens = 2 wei, 3 tokens = 3 wei, and so on. Or
+       in other words, the price of the token will be equal to the supply.
+* @dev core invariant 'priceToPay = ((2 * totalSupply) + amount + 1) * amount / 2' where
+       priceToPay -> is the amount in wei that the user will pay for 'amount' tokens and
+       totalSupply -> is the current supply of tokens
 */
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -87,6 +89,6 @@ contract BondingCurve is ERC20, Ownable2Step {
      * @notice The current price of the token is equal to the current supply
      */
     function getCurrentPrice() public view returns (uint256) {
-        return totalSupply();
+        return totalSupply() + 1;
     }
 }

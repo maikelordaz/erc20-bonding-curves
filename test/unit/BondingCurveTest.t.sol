@@ -29,7 +29,7 @@ contract BondingCurveTest is Test {
     function testMintMustRevertIfAmountIsZero() public {
         vm.prank(alice);
         vm.expectRevert(BondingCurve.InvalidAmount.selector);
-        curve.mint(0);
+        curve.buy(0);
     }
 
     function testMintMustRevertIfEthSendIsNotEnough() public {
@@ -45,7 +45,7 @@ contract BondingCurveTest is Test {
                 ethNeeded
             )
         );
-        curve.mint{value: ethSent}(tokenAmountExpected);
+        curve.buy{value: ethSent}(tokenAmountExpected);
     }
 
     function testMintTokens() public {
@@ -55,7 +55,7 @@ contract BondingCurveTest is Test {
         vm.prank(alice);
         vm.expectEmit(true, true, false, false, address(curve));
         emit Transfer(address(0), alice, tokenAmount);
-        curve.mint{value: ethToSend}(tokenAmount);
+        curve.buy{value: ethToSend}(tokenAmount);
 
         uint256 newPrice = curve.getCurrentPrice();
 
@@ -70,7 +70,7 @@ contract BondingCurveTest is Test {
         uint256 aliceBalanceBefore = address(alice).balance;
 
         vm.prank(alice);
-        curve.mint{value: ethSent}(tokenAmount);
+        curve.buy{value: ethSent}(tokenAmount);
 
         uint256 aliceBalanceAfter = address(alice).balance;
 
@@ -83,7 +83,7 @@ contract BondingCurveTest is Test {
         uint256 ethToSend = curve.getPaymentAmount(tokenAmount);
 
         vm.prank(alice);
-        curve.mint{value: ethToSend}(tokenAmount);
+        curve.buy{value: ethToSend}(tokenAmount);
 
         uint256 newPrice = curve.getCurrentPrice();
 

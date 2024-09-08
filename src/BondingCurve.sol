@@ -38,11 +38,11 @@ contract BondingCurve is ERC20, Ownable2Step {
     receive() external payable {}
 
     /**
-     * @notice Method to mint tokens to the caller
-     * @dev The user will pay the needed amount for the tokens to mint
-     * @param amount Amount of tokens to mint
+     * @notice Method to buy tokens
+     * @dev The user will pay the needed amount for the tokens
+     * @param amount Amount of tokens to buy
      */
-    function mint(uint256 amount) external payable notZeroAmount(amount) {
+    function buy(uint256 amount) external payable notZeroAmount(amount) {
         uint256 paymentAmount = _getPaymentAmount(amount);
         require(
             msg.value >= paymentAmount,

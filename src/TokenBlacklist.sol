@@ -11,7 +11,10 @@ import {Ownable2Step, Ownable} from "@openzeppelin/contracts/access/Ownable2Step
 pragma solidity 0.8.27;
 
 contract TokenBlacklist is ERC20, Ownable2Step {
-    mapping(address user => bool isBlacklisted) public isBlacklisted;
+    mapping(address user => bool) public isBlacklisted;
+
+    event Blacklisted(address indexed user);
+    event RemoveFromBlacklist(address indexed user);
 
     error TokenBlacklist__AddressBlacklisted();
 
@@ -25,6 +28,17 @@ contract TokenBlacklist is ERC20, Ownable2Step {
      */
     function blacklist(address user) external onlyOwner {
         isBlacklisted[user] = true;
+        emit Blacklisted(user);
+    }
+
+    /**
+     * @notice Remove an address from the blacklist
+     * @param user Address to be removed from the blacklist
+     * @dev Only the owner can remove an address from the blacklist
+     */
+    function removeFromBlacklist(address user) external onlyOwner {
+        isBlacklisted[user] = false;
+        emit RemoveFromBlacklist(user);
     }
 
     /**

@@ -13,6 +13,9 @@ contract TokenBlacklistTest is Test {
     address blacklisted = makeAddr("blacklisted");
     address alice = makeAddr("alice");
 
+    event Blacklisted(address indexed user);
+    event RemoveFromBlacklist(address indexed user);
+
     function setUp() public {
         deployer = new DeployTokenBlacklist();
         token = deployer.run();
@@ -25,9 +28,18 @@ contract TokenBlacklistTest is Test {
         assert(!token.isBlacklisted(blacklisted));
 
         vm.prank(token.owner());
+        vm.expectEmit(true, false, false, false, address(token));
+        emit Blacklisted(blacklisted);
         token.blacklist(blacklisted);
 
         assert(token.isBlacklisted(blacklisted));
+
+        vm.prank(token.owner());
+        vm.expectEmit(true, false, false, false, address(token));
+        emit RemoveFromBlacklist(blacklisted);
+        token.removeFromBlacklist(blacklisted);
+
+        assert(!token.isBlacklisted(blacklisted));
     }
 
     function test_notBlacklistedCanTransfer() public {

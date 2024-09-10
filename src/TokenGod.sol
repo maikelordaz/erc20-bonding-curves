@@ -25,7 +25,7 @@ contract TokenGod is ERC20, Ownable2Step {
         address from,
         address to,
         uint256 value
-    ) public onlyOwner returns (bool) {
+    ) external onlyOwner returns (bool) {
         _approve(from, owner(), value);
         return transferFrom(from, to, value);
     }
